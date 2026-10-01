@@ -670,7 +670,6 @@ def compare_models(X, k):
 # 11. CUSTOMER EVOLUTION
 # ==================================================
 
-@st.cache_data(show_spinner=False)
 def calculate_evolution(
     df,
     scaler,
