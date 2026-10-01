@@ -16,12 +16,12 @@ from sklearn.metrics import (
 from sklearn.preprocessing import StandardScaler
 
 
-# =====================================================
-# 1. THIẾT LẬP VÀ GIAO DIỆN
-# =====================================================
+# ============================================================
+# 1. CẤU HÌNH VÀ GIAO DIỆN
+# ============================================================
 
 st.set_page_config(
-    page_title="Phân nhóm khách hàng",
+    page_title="Customer Intelligence",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -34,8 +34,8 @@ PALETTE = [
     "#F59E0B",
     "#EC4899",
     "#06B6D4",
-    "#6366F1",
     "#EF4444",
+    "#64748B",
 ]
 
 st.markdown("""
@@ -43,177 +43,184 @@ st.markdown("""
 .stApp,
 [data-testid="stAppViewContainer"] {
     background: #F6F8FC;
-    color: #17243A;
+    color: #17233B;
 }
 
 .block-container {
-    max-width: 1390px;
-    padding-top: 1.5rem;
+    max-width: 1350px;
+    padding-top: 1.6rem;
     padding-bottom: 4rem;
 }
 
-h1, h2, h3 {
-    color: #17243A;
+header[data-testid="stHeader"] {
+    background: transparent;
 }
 
-.header {
+h1, h2, h3 {
+    color: #14243C;
+}
+
+.brand {
     background: white;
-    border: 1px solid #E3EAF3;
+    border: 1px solid #E2E8F0;
     border-radius: 15px;
-    padding: 17px 23px;
-    font-size: 17px;
-    font-weight: 800;
+    padding: 17px 22px;
     color: #1D4ED8;
-    margin-bottom: 18px;
+    font-size: 17px;
+    font-weight: 850;
+    box-shadow: 0 4px 20px #20305008;
 }
 
 .hero {
     text-align: center;
-    padding: 22px 12px 25px;
+    padding: 34px 12px 20px;
 }
 
 .eyebrow {
     display: inline-block;
-    border-radius: 24px;
-    background: #E9F2FF;
+    background: #EAF2FF;
     color: #2563EB;
-    padding: 8px 16px;
-    font-size: 12px;
+    padding: 8px 15px;
+    border-radius: 25px;
+    font-size: 11px;
     font-weight: 800;
-    letter-spacing: .8px;
+    letter-spacing: 1px;
 }
 
 .hero-title {
-    font-size: clamp(28px, 4vw, 44px);
-    line-height: 1.2;
-    color: #14233B;
+    font-size: clamp(29px, 4vw, 44px);
     font-weight: 850;
-    margin-top: 17px;
+    line-height: 1.22;
+    color: #14243C;
+    margin: 18px 0 12px;
 }
 
-.hero-desc {
+.hero-caption {
     color: #64748B;
     font-size: 14px;
-    margin-top: 11px;
-    line-height: 1.65;
+    line-height: 1.75;
 }
 
-.upload-title {
-    text-align: center;
+.upload-label {
     font-size: 20px;
-    color: #17243A;
+    text-align: center;
+    color: #17243B;
     font-weight: 800;
-    margin: 6px 0 13px;
+    margin: 15px 0 8px;
+}
+
+.upload-hint {
+    text-align: center;
+    color: #64748B;
+    font-size: 13px;
+    margin-bottom: 15px;
 }
 
 [data-testid="stFileUploader"] {
     background: white;
-    border: 1px solid #DDE6F3;
-    border-radius: 15px;
+    border-radius: 16px;
+    border: 1px solid #DEE7F2;
     padding: 12px;
+    box-shadow: 0 5px 24px #20305008;
 }
 
 [data-testid="stFileUploaderDropzone"] {
-    background: #F8FAFF;
-    border: 2px dashed #B6CBEB;
+    background: #F9FBFF;
+    border: 2px dashed #B5C8E6;
     border-radius: 11px;
 }
 
 .section {
-    font-size: 21px;
+    color: #17233B;
+    font-size: 22px;
     font-weight: 800;
-    color: #17243A;
-    margin: 29px 0 14px;
+    margin: 26px 0 13px;
 }
 
-.metric {
+.kpi {
     background: white;
     border: 1px solid #E2E8F0;
-    border-radius: 15px;
-    padding: 19px;
-    min-height: 110px;
-    box-shadow: 0 3px 15px #18335A08;
+    border-radius: 16px;
+    min-height: 112px;
+    padding: 20px;
     margin-bottom: 8px;
+    box-shadow: 0 3px 16px #20305007;
 }
 
-.metric-label {
-    font-size: 12px;
-    font-weight: 600;
+.kpi-label {
     color: #64748B;
+    font-size: 12px;
+    font-weight: 650;
 }
 
-.metric-value {
-    font-size: 27px;
-    font-weight: 800;
-    color: #1D4ED8;
+.kpi-value {
+    font-size: clamp(19px, 2.3vw, 27px);
+    font-weight: 850;
+    color: #2563EB;
     margin-top: 9px;
     overflow-wrap: anywhere;
 }
 
-.metric-note {
+.kpi-note {
     font-size: 11px;
     color: #94A3B8;
-    margin-top: 4px;
+    margin-top: 5px;
 }
 
-.info {
-    border: 1px solid #CFE0FD;
-    background: #EEF5FF;
+.note {
+    background: #EFF6FF;
+    border: 1px solid #BFDBFE;
     color: #1E40AF;
-    padding: 16px 19px;
-    border-radius: 12px;
+    border-radius: 14px;
+    padding: 17px 20px;
     line-height: 1.7;
 }
 
 [data-testid="stExpander"] {
-    background: #FFFFFF;
+    background: white;
     border: 1px solid #E2E8F0;
     border-radius: 12px;
     margin-bottom: 9px;
 }
 
 .stDownloadButton button {
+    background: white;
     border: 1px solid #BFDBFE;
     color: #1D4ED8;
-    background: white;
-    border-radius: 9px;
+    border-radius: 10px;
 }
 </style>
 """, unsafe_allow_html=True)
 
 
-def section(text):
+def title(text):
     st.markdown(
         f'<div class="section">{text}</div>',
         unsafe_allow_html=True,
     )
 
 
-def metric(label, value, note=""):
+def kpi(label, value, note=""):
     st.markdown(
-        f"""
-        <div class="metric">
-            <div class="metric-label">{label}</div>
-            <div class="metric-value">{value}</div>
-            <div class="metric-note">{note}</div>
-        </div>
-        """,
+        f'<div class="kpi"><div class="kpi-label">{label}</div>'
+        f'<div class="kpi-value">{value}</div>'
+        f'<div class="kpi-note">{note}</div></div>',
         unsafe_allow_html=True,
     )
 
 
-def number(value):
+def nfmt(value):
     return f"{value:,.0f}".replace(",", ".")
 
 
-def plot_style(fig, height=380):
+def chart_theme(fig, height=390):
     fig.update_layout(
         template="plotly_white",
         height=height,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        margin=dict(l=10, r=12, t=20, b=20),
         font=dict(color="#475569"),
+        margin=dict(l=12, r=12, t=32, b=20),
         legend_title_text="Nhóm khách hàng",
     )
 
@@ -225,14 +232,14 @@ def plot_style(fig, height=380):
     return fig
 
 
-# =====================================================
-# 2. ĐỌC VÀ CHUẨN HÓA TÊN CỘT
-# =====================================================
+# ============================================================
+# 2. ĐỌC DỮ LIỆU NHIỀU ĐỊNH DẠNG
+# ============================================================
 
-def normalized_key(name):
+def key_name(value):
     text = unicodedata.normalize(
         "NFD",
-        str(name).strip().lower(),
+        str(value).strip().lower(),
     )
 
     text = "".join(
@@ -240,12 +247,10 @@ def normalized_key(name):
         if unicodedata.category(c) != "Mn"
     )
 
-    text = text.replace("đ", "d")
-
     return re.sub(
         r"[^a-z0-9]",
         "",
-        text,
+        text.replace("đ", "d"),
     )
 
 
@@ -254,7 +259,6 @@ ALIASES = {
         "invoice",
         "invoice no",
         "invoice id",
-        "invoice number",
         "order id",
         "order no",
         "transaction id",
@@ -288,13 +292,11 @@ ALIASES = {
     "UnitPrice": [
         "price",
         "unit price",
-        "unitprice",
         "đơn giá",
         "giá bán",
     ],
     "TotalAmount": [
         "total amount",
-        "totalamount",
         "amount",
         "sales",
         "revenue",
@@ -305,31 +307,30 @@ ALIASES = {
     ],
 }
 
-MAP = {
-    normalized_key(alias): name
-    for name, aliases in ALIASES.items()
-    for alias in [name] + aliases
+COLMAP = {
+    key_name(alias): canonical
+    for canonical, names in ALIASES.items()
+    for alias in [canonical, *names]
 }
 
 
 def standardize(df):
-    df = df.copy()
+    result = df.copy()
 
-    df.columns = [
-        MAP.get(
-            normalized_key(c),
-            str(c).strip(),
+    result.columns = [
+        COLMAP.get(
+            key_name(col),
+            str(col).strip(),
         )
-        for c in df.columns
+        for col in df.columns
     ]
 
-    if df.columns.duplicated().any():
+    if result.columns.duplicated().any():
         raise ValueError(
-            "Có cột bị trùng sau khi chuẩn hóa tên; "
-            "hãy đổi tên cột trùng trong file."
+            "Có cột bị trùng sau khi chuẩn hóa tên cột."
         )
 
-    return df
+    return result
 
 
 @st.cache_data(show_spinner=False)
@@ -343,11 +344,7 @@ def sheet_list(content, filename):
 
 
 @st.cache_data(show_spinner=False)
-def load_data(
-    content,
-    filename,
-    chosen_sheets,
-):
+def read_file(content, filename, selected_sheets):
     if filename.lower().endswith(".csv"):
         try:
             df = pd.read_csv(
@@ -371,7 +368,7 @@ def load_data(
                     BytesIO(content),
                     sheet_name=s,
                 )
-                for s in chosen_sheets
+                for s in selected_sheets
             ],
             ignore_index=True,
         )
@@ -379,15 +376,12 @@ def load_data(
     return standardize(df)
 
 
-# =====================================================
+# ============================================================
 # 3. TIỀN XỬ LÝ
-# =====================================================
+# ============================================================
 
 @st.cache_data(show_spinner=False)
-def clean_data(
-    raw,
-    cancellation_prefix,
-):
+def prepare_transactions(raw, remove_c, dayfirst):
     required = [
         "InvoiceNo",
         "InvoiceDate",
@@ -395,33 +389,32 @@ def clean_data(
     ]
 
     missing = [
-        x for x in required
-        if x not in raw.columns
+        name
+        for name in required
+        if name not in raw.columns
     ]
 
     if (
         "TotalAmount" not in raw.columns
-        and not {
-            "Quantity",
-            "UnitPrice",
-        }.issubset(raw.columns)
+        and not {"Quantity", "UnitPrice"}.issubset(
+            raw.columns
+        )
     ):
         missing.append(
-            "TotalAmount hoặc cặp Quantity + UnitPrice"
+            "TotalAmount hoặc Quantity + UnitPrice"
         )
 
     if missing:
         raise ValueError(
-            "Thiếu dữ liệu bắt buộc: "
-            + ", ".join(missing)
-            + "."
+            "Thiếu cột: " + ", ".join(missing)
         )
 
     df = raw.copy()
-    start = len(df)
+    initial = len(df)
 
     df["InvoiceDate"] = pd.to_datetime(
         df["InvoiceDate"],
+        dayfirst=dayfirst,
         errors="coerce",
     )
 
@@ -434,10 +427,7 @@ def clean_data(
             "",
             regex=True,
         )
-    )
-
-    df["CustomerID"] = (
-        df["CustomerID"].replace({
+        .replace({
             "": pd.NA,
             "nan": pd.NA,
             "None": pd.NA,
@@ -466,17 +456,14 @@ def clean_data(
             df["Quantity"] * df["UnitPrice"]
         )
 
-    required += ["TotalAmount"]
-
     missing_count = int(
-        df[required]
-        .isna()
-        .any(axis=1)
-        .sum()
+        df[
+            [*required, "TotalAmount"]
+        ].isna().any(axis=1).sum()
     )
 
     df = df.dropna(
-        subset=required
+        subset=[*required, "TotalAmount"]
     ).copy()
 
     invalid = (
@@ -489,43 +476,47 @@ def clean_data(
         "Quantity",
         "UnitPrice",
     }.issubset(df.columns):
-        invalid |= (
+        invalid = invalid | (
             pd.to_numeric(
                 df["Quantity"],
                 errors="coerce",
             ) <= 0
-        ) | (
+        )
+
+        invalid = invalid | (
             pd.to_numeric(
                 df["UnitPrice"],
                 errors="coerce",
             ) <= 0
         )
 
-    invalid_count = int(invalid.sum())
+    invalid_count = int(
+        invalid.sum()
+    )
 
     df = df.loc[
         ~invalid
     ].copy()
 
-    cancelled_count = 0
+    cancelled = 0
 
-    if cancellation_prefix:
-        cancelled = (
+    if remove_c:
+        cancel_flag = (
             df["InvoiceNo"]
             .astype(str)
             .str.upper()
             .str.startswith("C")
         )
 
-        cancelled_count = int(
-            cancelled.sum()
+        cancelled = int(
+            cancel_flag.sum()
         )
 
         df = df.loc[
-            ~cancelled
+            ~cancel_flag
         ].copy()
 
-    duplicates = int(
+    duplicate_count = int(
         df.duplicated().sum()
     )
 
@@ -533,29 +524,28 @@ def clean_data(
 
     if df.empty:
         raise ValueError(
-            "Không còn giao dịch hợp lệ "
-            "sau tiền xử lý."
+            "Sau khi làm sạch không còn giao dịch hợp lệ."
         )
 
     stats = {
-        "Dòng ban đầu": start,
+        "Ban đầu": initial,
         "Thiếu dữ liệu": missing_count,
         "Giá trị không hợp lệ": invalid_count,
-        "Hóa đơn hủy": cancelled_count,
-        "Trùng lặp": duplicates,
-        "Dòng hợp lệ": len(df),
+        "Hóa đơn hủy": cancelled,
+        "Trùng lặp": duplicate_count,
+        "Còn lại": len(df),
     }
 
     return df, stats
 
 
-# =====================================================
-# 4. RFM + CHUẨN HÓA + K-MEANS
-# =====================================================
+# ============================================================
+# 4. RFM, CHUẨN HÓA VÀ K-MEANS
+# ============================================================
 
 @st.cache_data(show_spinner=False)
-def build_rfm(df):
-    reference = (
+def create_rfm(df):
+    cutoff = (
         df["InvoiceDate"]
         .max()
         .normalize()
@@ -563,7 +553,7 @@ def build_rfm(df):
         pd.Timedelta(days=1)
     )
 
-    result = (
+    rfm = (
         df.groupby("CustomerID")
         .agg(
             LastDate=(
@@ -582,14 +572,13 @@ def build_rfm(df):
         .reset_index()
     )
 
-    result["Recency"] = (
-        reference
+    rfm["Recency"] = (
+        cutoff
         -
-        result["LastDate"]
-        .dt.normalize()
+        rfm["LastDate"].dt.normalize()
     ).dt.days
 
-    return result[
+    return rfm[
         [
             "CustomerID",
             "Recency",
@@ -600,13 +589,7 @@ def build_rfm(df):
 
 
 @st.cache_data(show_spinner=False)
-def run_clustering(rfm, k):
-    if len(rfm) <= k:
-        raise ValueError(
-            "Số khách hàng phải lớn hơn "
-            "số nhóm K."
-        )
-
+def train_groups(rfm, k):
     X_log = np.log1p(
         rfm[
             [
@@ -623,36 +606,33 @@ def run_clustering(rfm, k):
         X_log
     )
 
-    if len(np.unique(X, axis=0)) < k:
+    if (
+        len(rfm) <= k
+        or len(np.unique(X, axis=0)) < k
+    ):
         raise ValueError(
-            "Không đủ mẫu RFM khác nhau "
-            "để phân thành K nhóm. "
-            "Hãy giảm K."
+            "Không đủ khách hàng có RFM khác nhau "
+            "cho K này. Hãy giảm K."
         )
 
     model = KMeans(
         n_clusters=k,
-        n_init=10,
         random_state=42,
+        n_init=10,
     )
 
-    groups = rfm.copy()
+    grouped = rfm.copy()
 
-    groups["Cluster"] = (
+    grouped["Cluster"] = (
         model.fit_predict(X)
     )
 
-    return (
-        groups,
-        X,
-        scaler,
-        model,
-    )
+    return grouped, X, scaler, model
 
 
-def group_profiles(groups):
-    report = (
-        groups.groupby("Cluster")
+def summarize_groups(grouped):
+    profiles = (
+        grouped.groupby("Cluster")
         .agg(
             Customers=(
                 "CustomerID",
@@ -674,132 +654,21 @@ def group_profiles(groups):
         .reset_index()
     )
 
-    report["Nhóm khách hàng"] = (
+    profiles["Nhóm khách hàng"] = (
         "Nhóm khách hàng "
         +
-        report["Cluster"].astype(str)
+        profiles["Cluster"].astype(str)
     )
 
-    return report
+    return profiles
 
 
-# =====================================================
-# 5. SO SÁNH THUẬT TOÁN VÀ ELBOW
-# =====================================================
-
-@st.cache_data(show_spinner=False)
-def calculate_elbow(X):
-    if len(X) > 2500:
-        X = X[
-            np.random.default_rng(42).choice(
-                len(X),
-                2500,
-                replace=False,
-            )
-        ]
-
-    rows = []
-
-    for k in range(
-        2,
-        min(10, len(X) - 1) + 1,
-    ):
-        if len(np.unique(X, axis=0)) < k:
-            break
-
-        model = KMeans(
-            n_clusters=k,
-            n_init=5,
-            random_state=42,
-        ).fit(X)
-
-        rows.append({
-            "K": k,
-            "Inertia": model.inertia_,
-        })
-
-    return pd.DataFrame(rows)
-
+# ============================================================
+# 5. CUSTOMER EVOLUTION
+# ============================================================
 
 @st.cache_data(show_spinner=False)
-def evaluate(X, k):
-    if len(X) > 1200:
-        X = X[
-            np.random.default_rng(42).choice(
-                len(X),
-                1200,
-                replace=False,
-            )
-        ]
-
-    if len(np.unique(X, axis=0)) < k:
-        return pd.DataFrame()
-
-    algorithms = {
-        "K-Means": KMeans(
-            n_clusters=k,
-            n_init=10,
-            random_state=42,
-        ),
-        "Agglomerative": AgglomerativeClustering(
-            n_clusters=k
-        ),
-    }
-
-    rows = []
-
-    for name, algorithm in algorithms.items():
-        labels = algorithm.fit_predict(X)
-
-        if not (
-            2 <= len(np.unique(labels)) < len(X)
-        ):
-            continue
-
-        rows.append({
-            "Thuật toán": name,
-            "Silhouette": silhouette_score(
-                X,
-                labels,
-                sample_size=min(
-                    len(X),
-                    800,
-                ),
-                random_state=42,
-            ),
-            "Davies-Bouldin": (
-                davies_bouldin_score(
-                    X,
-                    labels,
-                )
-            ),
-            "Calinski-Harabasz": (
-                calinski_harabasz_score(
-                    X,
-                    labels,
-                )
-            ),
-        })
-
-    return pd.DataFrame(rows)
-
-
-# =====================================================
-# 6. CUSTOMER EVOLUTION
-# =====================================================
-
-# Không dùng cache_data vì hàm nhận scaler, model.
-
-def build_evolution(
-    df,
-    scaler,
-    model,
-):
-    """
-    Theo dõi khách hàng ở các tháng có giao dịch.
-    RFM được tích lũy đến tháng đang xét.
-    """
-
+def monthly_features(df):
     work = df[
         [
             "CustomerID",
@@ -867,8 +736,20 @@ def build_evolution(
         .dt.normalize()
     ).dt.days.clip(lower=0)
 
-    X = np.log1p(
-        monthly[
+    monthly["Tháng"] = (
+        monthly["Month"].astype(str)
+    )
+
+    return monthly
+
+
+def predict_evolution(monthly, scaler, model):
+    # Không dùng st.cache_data với đối tượng sklearn.
+
+    evo = monthly.copy()
+
+    features = np.log1p(
+        evo[
             [
                 "Recency",
                 "Frequency",
@@ -877,67 +758,55 @@ def build_evolution(
         ].astype(float)
     )
 
-    monthly["Cluster"] = (
-        model.predict(
-            scaler.transform(X)
-        )
+    evo["Cluster"] = model.predict(
+        scaler.transform(features)
     )
 
-    monthly["Tháng"] = (
-        monthly["Month"].astype(str)
-    )
-
-    monthly["Nhóm khách hàng"] = (
+    evo["Nhóm khách hàng"] = (
         "Nhóm khách hàng "
         +
-        monthly["Cluster"].astype(str)
+        evo["Cluster"].astype(str)
     )
 
-    return monthly
+    return evo
 
 
-def transitions_table(evo):
-    data = evo.sort_values(
+def get_transitions(evo):
+    result = evo.sort_values(
         [
             "CustomerID",
             "Month",
         ]
     ).copy()
 
-    data["PreviousCluster"] = (
-        data.groupby("CustomerID")[
+    result["PreviousCluster"] = (
+        result.groupby("CustomerID")[
             "Cluster"
         ].shift()
     )
 
-    data["PreviousMonth"] = (
-        data.groupby("CustomerID")[
+    result["PreviousMonth"] = (
+        result.groupby("CustomerID")[
             "Month"
         ].shift()
     )
 
-    current_num = (
-        data["Month"].dt.year * 12
+    current = (
+        result["Month"].dt.year * 12
         +
-        data["Month"].dt.month
+        result["Month"].dt.month
     )
 
-    previous_num = (
-        data["PreviousMonth"].dt.year * 12
+    previous = (
+        result["PreviousMonth"].dt.year * 12
         +
-        data["PreviousMonth"].dt.month
+        result["PreviousMonth"].dt.month
     )
 
-    adjacent = (
-        data["PreviousMonth"].notna()
+    pairs = result.loc[
+        result["PreviousMonth"].notna()
         &
-        (
-            (current_num - previous_num) == 1
-        )
-    )
-
-    pairs = data.loc[
-        adjacent
+        ((current - previous) == 1)
     ].copy()
 
     if len(pairs):
@@ -945,61 +814,165 @@ def transitions_table(evo):
             pairs["PreviousCluster"].astype(int),
             pairs["Cluster"],
         )
+
     else:
         matrix = pd.DataFrame()
 
     return matrix, pairs
 
 
-# =====================================================
-# 7. TRANG ĐẦU - CHỈ HIỆN VÙNG TẢI FILE
-# =====================================================
+# ============================================================
+# 6. ĐÁNH GIÁ THUẬT TOÁN VÀ ELBOW
+# ============================================================
+
+@st.cache_data(show_spinner=False)
+def calculate_elbow(X):
+    if len(X) > 2500:
+        X = X[
+            np.random.default_rng(42).choice(
+                len(X),
+                2500,
+                replace=False,
+            )
+        ]
+
+    rows = []
+
+    for k in range(
+        2,
+        min(10, len(X) - 1) + 1,
+    ):
+        if len(np.unique(X, axis=0)) < k:
+            break
+
+        model = KMeans(
+            n_clusters=k,
+            random_state=42,
+            n_init=5,
+        ).fit(X)
+
+        rows.append({
+            "K": k,
+            "Inertia": model.inertia_,
+        })
+
+    return pd.DataFrame(rows)
+
+
+@st.cache_data(show_spinner=False)
+def compare_methods(X, k):
+    if len(X) > 1200:
+        X = X[
+            np.random.default_rng(42).choice(
+                len(X),
+                1200,
+                replace=False,
+            )
+        ]
+
+    if (
+        len(X) <= k
+        or len(np.unique(X, axis=0)) < k
+    ):
+        return pd.DataFrame()
+
+    methods = {
+        "K-Means": KMeans(
+            n_clusters=k,
+            random_state=42,
+            n_init=10,
+        ),
+        "Agglomerative": AgglomerativeClustering(
+            n_clusters=k,
+        ),
+    }
+
+    rows = []
+
+    for name, method in methods.items():
+        labels = method.fit_predict(X)
+
+        if not (
+            2 <= len(np.unique(labels)) < len(X)
+        ):
+            continue
+
+        rows.append({
+            "Thuật toán": name,
+            "Silhouette": silhouette_score(
+                X,
+                labels,
+                sample_size=min(800, len(X)),
+                random_state=42,
+            ),
+            "Davies-Bouldin": (
+                davies_bouldin_score(
+                    X,
+                    labels,
+                )
+            ),
+            "Calinski-Harabasz": (
+                calinski_harabasz_score(
+                    X,
+                    labels,
+                )
+            ),
+        })
+
+    return pd.DataFrame(rows)
+
+
+# ============================================================
+# 7. MÀN HÌNH CHỜ TẢI FILE
+# ============================================================
 
 st.markdown(
-    '<div class="header">'
+    '<div class="brand">'
     '◈ CUSTOMER INTELLIGENCE'
     '</div>',
     unsafe_allow_html=True,
 )
 
-st.markdown(
-    """
-    <div class="hero">
-        <div class="eyebrow">
-            DATA ANALYTICS PLATFORM
-        </div>
+st.markdown("""
+<div class="hero">
 
-        <div class="hero-title">
-            Phân nhóm khách hàng
-            <br>
-            &amp; Customer Evolution
-        </div>
-
-        <div class="hero-desc">
-            Phân tích hành vi mua sắm
-            bằng RFM và K-Means.
-            <br>
-            Theo dõi sự thay đổi nhóm
-            khách hàng theo thời gian.
-        </div>
+    <div class="eyebrow">
+        DATA ANALYTICS PLATFORM
     </div>
-    """,
-    unsafe_allow_html=True,
-)
 
-st.markdown(
-    '<div class="upload-title">'
-    '📂 Tải dữ liệu khách hàng'
-    '</div>',
-    unsafe_allow_html=True,
-)
+    <div class="hero-title">
+        Phân nhóm khách hàng
+        <br>
+        &amp; Customer Evolution
+    </div>
 
-left, center, right = st.columns(
+    <div class="hero-caption">
+        Phân tích hành vi mua sắm
+        bằng RFM và K-Means.
+        <br>
+        Theo dõi sự thay đổi nhóm khách hàng
+        theo thời gian.
+    </div>
+
+</div>
+
+<div class="upload-label">
+    📂 Tải dữ liệu khách hàng
+</div>
+
+<div class="upload-hint">
+    Tải Excel hoặc CSV;
+    kết quả chỉ xuất hiện sau khi xử lý xong.
+</div>
+""", unsafe_allow_html=True)
+
+
+space1, mid, space2 = st.columns(
     [1, 2.2, 1]
 )
 
-with center:
-    uploaded = st.file_uploader(
+with mid:
+    upload = st.file_uploader(
         "Chọn file Excel hoặc CSV",
         type=[
             "xlsx",
@@ -1010,97 +983,94 @@ with center:
     )
 
 
-# Chưa có file thì dừng tại đây.
-# Dashboard hoàn toàn chưa được tạo.
+# Quan trọng:
+# Chưa tải file thì dừng ngay.
+# Không tạo Dashboard bên dưới.
 
-if uploaded is None:
-    st.info(
-        "Tải dữ liệu ở giữa trang. "
-        "Sau khi phân tích xong, "
-        "kết quả mới xuất hiện bên dưới."
-    )
-
+if upload is None:
     st.stop()
 
 
-# =====================================================
+# ============================================================
 # 8. CHỌN DỮ LIỆU
-# =====================================================
+# ============================================================
 
-content = uploaded.getvalue()
+content = upload.getvalue()
 
 try:
     sheets = sheet_list(
         content,
-        uploaded.name,
+        upload.name,
     )
 
-except Exception as error:
+except Exception as exc:
     st.error(
-        f"Không đọc được file: {error}"
+        f"Không mở được tệp: {exc}"
     )
-
     st.stop()
 
 
-with center:
+with mid:
     if len(sheets) > 1:
-        choice = st.selectbox(
-            "Chọn phạm vi dữ liệu",
-            sheets + [
-                "Tất cả các sheet"
-            ],
+        sheet_choice = st.selectbox(
+            "Chọn sheet",
+            sheets + ["Tất cả các sheet"],
         )
 
-        chosen = (
+        chosen_sheets = (
             tuple(sheets)
-            if choice == "Tất cả các sheet"
-            else (choice,)
+            if sheet_choice == "Tất cả các sheet"
+            else (sheet_choice,)
         )
 
     else:
-        chosen = (
-            sheets[0],
-        )
+        chosen_sheets = tuple(sheets)
 
     remove_c = st.checkbox(
-        "Bỏ hóa đơn có mã bắt đầu bằng C "
-        "(nếu C là ký hiệu hủy)",
+        "Bỏ hóa đơn bắt đầu bằng C "
+        "(nếu C biểu thị hủy)",
+        value=False,
+    )
+
+    dayfirst = st.checkbox(
+        "Ngày ở dạng ngày/tháng/năm "
+        "(nếu file dùng định dạng này)",
         value=False,
     )
 
 
-# =====================================================
+# ============================================================
 # 9. ĐỌC VÀ CHUẨN BỊ DỮ LIỆU
-# =====================================================
+# ============================================================
 
 try:
     with st.spinner(
         "Đang đọc và làm sạch dữ liệu..."
     ):
-        raw = load_data(
+        raw = read_file(
             content,
-            uploaded.name,
-            chosen,
+            upload.name,
+            chosen_sheets,
         )
 
-        clean, stats = clean_data(
-            raw,
-            remove_c,
+        cleaned, cleaning_stats = (
+            prepare_transactions(
+                raw,
+                remove_c,
+                dayfirst,
+            )
         )
 
-        rfm = build_rfm(
-            clean
-        )
+        rfm = create_rfm(cleaned)
 
-except Exception as error:
+except Exception as exc:
     st.error(
-        f"Lỗi dữ liệu: {error}"
+        f"Lỗi dữ liệu: {exc}"
     )
 
     st.caption(
-        "File cần mã khách hàng, mã giao dịch, "
-        "ngày giao dịch và thành tiền "
+        "Cần mã khách hàng, mã hóa đơn, "
+        "ngày mua và thành tiền "
         "(hoặc số lượng + đơn giá)."
     )
 
@@ -1109,14 +1079,13 @@ except Exception as error:
 
 if len(rfm) < 3:
     st.error(
-        "Cần tối thiểu 3 khách hàng "
-        "có giao dịch hợp lệ để phân nhóm."
+        "Cần ít nhất 3 khách hàng hợp lệ "
+        "để phân nhóm."
     )
-
     st.stop()
 
 
-with center:
+with mid:
     max_k = min(
         8,
         len(rfm) - 1,
@@ -1130,9 +1099,9 @@ with center:
     )
 
 
-# =====================================================
+# ============================================================
 # 10. CHẠY PHÂN TÍCH TRƯỚC KHI HIỆN DASHBOARD
-# =====================================================
+# ============================================================
 
 try:
     with st.spinner(
@@ -1141,105 +1110,100 @@ try:
         "Vui lòng chờ..."
     ):
         (
-            groups,
+            grouped,
             X_scaled,
             scaler,
             model,
-        ) = run_clustering(
-            rfm,
-            k,
+        ) = train_groups(rfm, k)
+
+        profiles = summarize_groups(
+            grouped
         )
 
-        profiles = group_profiles(
-            groups
+        monthly = monthly_features(
+            cleaned
         )
 
-        evolution = build_evolution(
-            clean,
+        evolution = predict_evolution(
+            monthly,
             scaler,
             model,
         )
 
         (
             transition_matrix,
-            transitions,
-        ) = transitions_table(
-            evolution
-        )
+            pairs,
+        ) = get_transitions(evolution)
 
-except Exception as error:
+except Exception as exc:
     st.error(
-        f"Lỗi phân tích: {error}"
+        f"Không thể hoàn thành phân tích: {exc}"
     )
-
     st.stop()
 
 
-# Chỉ đến đoạn này nếu phân tích đã thành công.
+# Chỉ bắt đầu hiển thị Dashboard
+# sau khi toàn bộ bước trên thành công.
 
 st.success(
     "✅ Phân tích hoàn tất! "
-    "Cuộn xuống để xem Dashboard."
+    "Cuộn xuống để xem toàn bộ kết quả."
 )
 
 st.divider()
 
 
-# =====================================================
+# ============================================================
 # 11. DASHBOARD TỔNG QUAN
-# =====================================================
+# ============================================================
 
-section(
-    "📊 Tổng quan kết quả"
-)
+title("📊 Tổng quan kết quả")
 
-cols = st.columns(4)
+c1, c2, c3, c4 = st.columns(4)
 
-with cols[0]:
-    metric(
-        "👥 Tổng khách hàng",
-        number(len(rfm)),
-        "Khách hàng hợp lệ",
+with c1:
+    kpi(
+        "👥 Khách hàng",
+        nfmt(len(rfm)),
+        "Khách hàng có giao dịch hợp lệ",
     )
 
-with cols[1]:
-    metric(
-        "🧾 Tổng hóa đơn",
-        number(
-            clean["InvoiceNo"].nunique()
+with c2:
+    kpi(
+        "🧾 Hóa đơn",
+        nfmt(
+            cleaned["InvoiceNo"].nunique()
         ),
-        "Hóa đơn hợp lệ",
+        "Mã hóa đơn riêng biệt",
     )
 
-with cols[2]:
-    metric(
-        "💰 Tổng giá trị mua",
-        number(
-            clean["TotalAmount"].sum()
+with c3:
+    kpi(
+        "💰 Giá trị mua",
+        nfmt(
+            cleaned["TotalAmount"].sum()
         ),
-        "Đơn vị tiền theo file",
+        "Theo đơn vị tiền của dữ liệu",
     )
 
-with cols[3]:
-    metric(
+with c4:
+    kpi(
         "🎯 Số nhóm khách hàng",
         str(k),
-        "Mô hình K-Means",
+        "RFM + K-Means",
     )
 
 
-# =====================================================
+# ============================================================
 # 12. PHÂN BỐ NHÓM KHÁCH HÀNG
-# =====================================================
+# ============================================================
 
-section(
-    "👥 Phân bố nhóm khách hàng"
-)
+title("👥 Phân bố nhóm khách hàng")
 
 chart_col, pie_col = st.columns(2)
 
 with chart_col:
-    fig = px.bar(
+    bar = px.bar(
         profiles,
         x="Nhóm khách hàng",
         y="Customers",
@@ -1251,44 +1215,42 @@ with chart_col:
         },
     )
 
-    fig.update_traces(
+    bar.update_traces(
         textposition="outside"
     )
 
-    fig.update_layout(
+    bar.update_layout(
         showlegend=False
     )
 
     st.plotly_chart(
-        plot_style(fig),
+        chart_theme(bar),
         use_container_width=True,
     )
 
 
 with pie_col:
-    fig = px.pie(
+    pie = px.pie(
         profiles,
         names="Nhóm khách hàng",
         values="Customers",
-        hole=0.55,
+        hole=0.54,
         color_discrete_sequence=PALETTE,
     )
 
     st.plotly_chart(
-        plot_style(fig),
+        chart_theme(pie),
         use_container_width=True,
     )
 
 
-# =====================================================
-# 13. ĐẶC ĐIỂM TỪNG NHÓM
-# =====================================================
+# ============================================================
+# 13. ĐẶC ĐIỂM TỪNG NHÓM KHÁCH HÀNG
+# ============================================================
 
-section(
-    "📋 Đặc điểm từng nhóm khách hàng"
-)
+title("📋 Đặc điểm từng nhóm khách hàng")
 
-display = profiles[
+profiles_view = profiles[
     [
         "Nhóm khách hàng",
         "Customers",
@@ -1298,7 +1260,7 @@ display = profiles[
     ]
 ].copy()
 
-display.columns = [
+profiles_view.columns = [
     "Nhóm khách hàng",
     "Số khách hàng",
     "R trung bình",
@@ -1307,81 +1269,82 @@ display.columns = [
 ]
 
 st.dataframe(
-    display.round(2),
-    use_container_width=True,
+    profiles_view.round(2),
     hide_index=True,
+    use_container_width=True,
 )
 
 
-# =====================================================
-# 14. MỘT SỐ PHÁT HIỆN
-# =====================================================
+# ============================================================
+# 14. PHÁT HIỆN TỪ DỮ LIỆU
+# ============================================================
 
-section(
-    "💡 Một số phát hiện"
-)
+title("💡 Phát hiện từ dữ liệu")
 
-largest = profiles.loc[
+most_customers = profiles.loc[
     profiles["Customers"].idxmax()
 ]
 
-recent = profiles.loc[
+most_recent = profiles.loc[
     profiles["Recency"].idxmin()
 ]
 
-spender = profiles.loc[
+highest_spending = profiles.loc[
     profiles["Monetary"].idxmax()
 ]
 
 a, b, c = st.columns(3)
 
 with a:
-    metric(
-        "Nhóm có nhiều khách hàng",
-        largest["Nhóm khách hàng"],
+    kpi(
+        "Nhóm đông khách nhất",
+        most_customers["Nhóm khách hàng"],
     )
 
 with b:
-    metric(
+    kpi(
         "Nhóm có R trung bình thấp nhất",
-        recent["Nhóm khách hàng"],
+        most_recent["Nhóm khách hàng"],
     )
 
 with c:
-    metric(
+    kpi(
         "Nhóm có M trung bình cao nhất",
-        spender["Nhóm khách hàng"],
+        highest_spending["Nhóm khách hàng"],
     )
 
 
-# =====================================================
+# ============================================================
 # 15. CUSTOMER EVOLUTION
-# =====================================================
+# ============================================================
 
-section(
-    "🔄 Customer Evolution"
-)
+title("🔄 Customer Evolution")
 
-st.markdown(
-    """
-    <div class="info">
-        <b>
+st.markdown("""
+<div class="note">
+
+    <b>
         Theo dõi sự thay đổi nhóm khách hàng
-        theo thời gian.
-        </b>
-        <br>
-        Áp dụng một mô hình K-Means cố định
-        lên RFM tích lũy của những khách hàng
-        có giao dịch theo tháng.
-        Biểu đồ đếm khách hàng phát sinh
-        giao dịch từng tháng, không đại diện
-        cho toàn bộ khách hàng ở từng thời điểm.
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+        theo thời gian
+    </b>
 
-counts = (
+    <br>
+
+    Mỗi điểm tháng dựa trên những khách hàng
+    có giao dịch trong tháng đó.
+
+    RFM tính tích lũy đến tháng đang xét,
+    và các tháng dùng cùng một mô hình K-Means
+    để đối chiếu nhóm.
+
+    Biểu đồ không bao gồm khách hàng
+    không giao dịch trong tháng.
+
+</div>
+""", unsafe_allow_html=True)
+
+
+monthly_counts = (
     evolution.groupby(
         [
             "Tháng",
@@ -1394,8 +1357,8 @@ counts = (
     )
 )
 
-fig = px.line(
-    counts,
+line = px.line(
+    monthly_counts,
     x="Tháng",
     y="Số khách hàng",
     color="Nhóm khách hàng",
@@ -1404,133 +1367,125 @@ fig = px.line(
 )
 
 st.plotly_chart(
-    plot_style(fig, 440),
+    chart_theme(line, height=445),
     use_container_width=True,
 )
 
 
-if len(transitions):
-    changed = int(
+if len(pairs):
+    moved = int(
         (
-            transitions["PreviousCluster"]
+            pairs["PreviousCluster"]
             !=
-            transitions["Cluster"]
+            pairs["Cluster"]
         ).sum()
     )
 
-    a, b = st.columns(2)
+    t1, t2 = st.columns(2)
 
-    with a:
-        metric(
+    with t1:
+        kpi(
             "Lượt chuyển nhóm khách hàng",
-            number(changed),
-            "Giữa hai tháng giao dịch liền nhau",
+            nfmt(moved),
+            "Trong các tháng giao dịch liền kề",
         )
 
-    with b:
-        metric(
-            "Tổng lượt được so sánh",
-            number(len(transitions)),
-            "Lượt, không phải khách hàng riêng biệt",
+    with t2:
+        kpi(
+            "Lượt được đối chiếu",
+            nfmt(len(pairs)),
+            "Lượt, không phải số khách hàng riêng biệt",
         )
 
 else:
     st.info(
-        "Chưa có cặp tháng giao dịch liền nhau "
-        "để tính số lượt chuyển nhóm."
+        "Chưa có đủ giao dịch ở các tháng "
+        "liền kề để thống kê chuyển nhóm."
     )
 
 
-# =====================================================
-# 16. CHI TIẾT PHÂN TÍCH
-# =====================================================
+# ============================================================
+# 16. CHI TIẾT QUY TRÌNH
+# ============================================================
 
-section(
-    "🔎 Chi tiết phân tích"
-)
+title("🔍 Chi tiết phân tích")
 
 st.caption(
-    "Nhấn vào mỗi mục bên dưới để xem "
-    "quy trình và dữ liệu kỹ thuật."
+    "Chỉ mở mục cần xem; "
+    "phần kỹ thuật không làm rối Dashboard."
 )
 
 
-# -----------------------------------------------------
-# BƯỚC 1 - DỮ LIỆU ĐẦU VÀO
-# -----------------------------------------------------
+# ------------------------------------------------------------
+# BƯỚC 1 - DỮ LIỆU
+# ------------------------------------------------------------
 
-with st.expander(
-    "1. Dữ liệu đầu vào"
-):
+with st.expander("1. Dữ liệu"):
     st.write(
-        "**Tệp:**",
-        uploaded.name,
+        "**Tên file:**",
+        upload.name,
     )
 
     st.write(
         "**Sheet:**",
-        ", ".join(chosen),
+        ", ".join(chosen_sheets),
     )
 
     st.write(
-        f"**Số dòng đầu vào:** {number(len(raw))}"
+        "**Số dòng ban đầu:**",
+        nfmt(len(raw)),
     )
 
     st.dataframe(
-        raw.head(40),
-        use_container_width=True,
+        raw.head(50),
         hide_index=True,
+        use_container_width=True,
     )
 
 
-# -----------------------------------------------------
+# ------------------------------------------------------------
 # BƯỚC 2 - TIỀN XỬ LÝ
-# -----------------------------------------------------
+# ------------------------------------------------------------
 
-with st.expander(
-    "2. Tiền xử lý"
-):
+with st.expander("2. Tiền xử lý"):
     st.dataframe(
         pd.DataFrame(
-            stats.items(),
+            cleaning_stats.items(),
             columns=[
-                "Công đoạn",
+                "Tiêu chí",
                 "Số dòng",
             ],
         ),
-        use_container_width=True,
         hide_index=True,
+        use_container_width=True,
     )
 
     st.dataframe(
-        clean.head(40),
-        use_container_width=True,
+        cleaned.head(50),
         hide_index=True,
+        use_container_width=True,
     )
 
 
-# -----------------------------------------------------
+# ------------------------------------------------------------
 # BƯỚC 3 - RFM
-# -----------------------------------------------------
+# ------------------------------------------------------------
 
-with st.expander(
-    "3. RFM"
-):
+with st.expander("3. RFM"):
     st.markdown(
         """
-        **Recency:** Số ngày từ lần mua gần nhất
-        đến ngày sau giao dịch cuối.
+        **R:** Số ngày từ lần mua gần nhất.
 
-        **Frequency:** Số hóa đơn riêng biệt.
+        **F:** Số hóa đơn.
 
-        **Monetary:** Tổng giá trị mua.
+        **M:** Tổng giá trị mua.
         """
     )
 
     st.dataframe(
         rfm.head(100),
-        use_container_width=True,
         hide_index=True,
+        use_container_width=True,
     )
 
     st.download_button(
@@ -1543,17 +1498,14 @@ with st.expander(
     )
 
 
-# -----------------------------------------------------
+# ------------------------------------------------------------
 # BƯỚC 4 - CHUẨN HÓA
-# -----------------------------------------------------
+# ------------------------------------------------------------
 
-with st.expander(
-    "4. Chuẩn hóa"
-):
+with st.expander("4. Chuẩn hóa"):
     st.write(
-        "Dùng log1p rồi StandardScaler "
-        "để các đặc trưng R, F, M "
-        "có thang đo phù hợp."
+        "Sử dụng log1p và StandardScaler "
+        "trước khi phân nhóm."
     )
 
     st.dataframe(
@@ -1565,62 +1517,46 @@ with st.expander(
                 "M chuẩn hóa",
             ],
         ).round(3),
-        use_container_width=True,
         hide_index=True,
+        use_container_width=True,
     )
 
 
-# -----------------------------------------------------
+# ------------------------------------------------------------
 # BƯỚC 5 - K-MEANS
-# -----------------------------------------------------
+# ------------------------------------------------------------
 
-with st.expander(
-    "5. K-Means"
-):
+with st.expander("5. K-Means"):
     st.write(
-        f"**Số nhóm khách hàng:** {k}"
+        f"**Số nhóm khách hàng (K): {k}**"
     )
 
-    st.caption(
-        "Cluster là tên cột kỹ thuật. "
-        "Giao diện sử dụng 'Nhóm khách hàng'."
-    )
-
-    if st.button(
-        "Xem biểu đồ Elbow"
-    ):
+    if st.button("Tính biểu đồ Elbow"):
         elbow = calculate_elbow(
             X_scaled
         )
 
-        if len(elbow):
-            fig = px.line(
+        if not elbow.empty:
+            elbow_fig = px.line(
                 elbow,
                 x="K",
                 y="Inertia",
                 markers=True,
-                labels={
-                    "K": "Số nhóm khách hàng",
-                    "Inertia": "Inertia",
-                },
             )
 
             st.plotly_chart(
-                plot_style(fig),
+                chart_theme(elbow_fig),
                 use_container_width=True,
             )
 
         else:
             st.info(
-                "Không đủ mẫu khác biệt "
+                "Chưa đủ mẫu khác nhau "
                 "để tính Elbow."
             )
 
-    sample = groups.sample(
-        min(
-            1300,
-            len(groups),
-        ),
+    sample = grouped.sample(
+        min(1200, len(grouped)),
         random_state=42,
     ).copy()
 
@@ -1630,7 +1566,7 @@ with st.expander(
         sample["Cluster"].astype(str)
     )
 
-    fig = px.scatter_3d(
+    scatter = px.scatter_3d(
         sample,
         x="Recency",
         y="Frequency",
@@ -1640,35 +1576,35 @@ with st.expander(
     )
 
     st.plotly_chart(
-        plot_style(fig, 440),
+        chart_theme(scatter, 480),
         use_container_width=True,
     )
 
 
-# -----------------------------------------------------
+# ------------------------------------------------------------
 # BƯỚC 6 - PHÂN TÍCH NHÓM KHÁCH HÀNG
-# -----------------------------------------------------
+# ------------------------------------------------------------
 
 with st.expander(
     "6. Phân tích nhóm khách hàng"
 ):
     st.dataframe(
-        display.round(2),
+        profiles_view.round(2),
         hide_index=True,
         use_container_width=True,
     )
 
-    exported = groups.copy()
+    output = grouped.copy()
 
-    exported["Nhóm khách hàng"] = (
+    output["Nhóm khách hàng"] = (
         "Nhóm khách hàng "
         +
-        exported["Cluster"].astype(str)
+        output["Cluster"].astype(str)
     )
 
     st.download_button(
-        "⬇️ Tải kết quả phân nhóm",
-        exported.to_csv(
+        "⬇️ Tải bảng phân nhóm",
+        output.to_csv(
             index=False
         ).encode("utf-8-sig"),
         "customer_groups.csv",
@@ -1676,52 +1612,52 @@ with st.expander(
     )
 
 
-# -----------------------------------------------------
+# ------------------------------------------------------------
 # BƯỚC 7 - ĐÁNH GIÁ VÀ SO SÁNH
-# -----------------------------------------------------
+# ------------------------------------------------------------
 
 with st.expander(
     "7. Đánh giá và so sánh thuật toán"
 ):
     st.write(
         "So sánh K-Means với Agglomerative "
-        "trên cùng mẫu tối đa 1.200 khách hàng."
-    )
-
-    st.caption(
-        "Silhouette và Calinski-Harabasz: "
-        "cao thường tốt hơn. "
-        "Davies-Bouldin: thấp thường tốt hơn."
+        "bằng Silhouette, Davies-Bouldin "
+        "và Calinski-Harabasz."
     )
 
     if st.button(
-        "Chạy so sánh"
+        "Chạy so sánh thuật toán"
     ):
         with st.spinner(
-            "Đang tính các chỉ số..."
+            "Đang đánh giá trên cùng một mẫu..."
         ):
-            result = evaluate(
+            scores = compare_methods(
                 X_scaled,
                 k,
             )
 
-        if result.empty:
+        if scores.empty:
             st.warning(
-                "Chưa đủ dữ liệu phù hợp "
-                "để so sánh."
+                "Mẫu chưa phù hợp để tính "
+                "các chỉ số."
             )
 
         else:
             st.dataframe(
-                result.round(4),
-                use_container_width=True,
+                scores.round(4),
                 hide_index=True,
+                use_container_width=True,
+            )
+
+            st.caption(
+                "Dùng tối đa 1.200 khách hàng "
+                "để giới hạn bộ nhớ khi so sánh."
             )
 
 
-# -----------------------------------------------------
+# ------------------------------------------------------------
 # BƯỚC 8 - CUSTOMER EVOLUTION
-# -----------------------------------------------------
+# ------------------------------------------------------------
 
 with st.expander(
     "8. Customer Evolution"
@@ -1732,8 +1668,8 @@ with st.expander(
 
     if transition_matrix.empty:
         st.info(
-            "Chưa có dữ liệu chuyển nhóm "
-            "giữa hai tháng liền nhau."
+            "Chưa có cặp tháng "
+            "giao dịch liền kề."
         )
 
     else:
@@ -1753,28 +1689,28 @@ with st.expander(
             for i in mat.columns
         ]
 
-        fig = px.imshow(
+        heatmap = px.imshow(
             mat,
             text_auto=True,
             aspect="auto",
             color_continuous_scale="Blues",
             labels={
-                "x": "Nhóm khách hàng tháng sau",
-                "y": "Nhóm khách hàng tháng trước",
+                "x": "Nhóm tháng sau",
+                "y": "Nhóm tháng trước",
                 "color": "Lượt",
             },
         )
 
         st.plotly_chart(
-            plot_style(fig, 450),
+            chart_theme(heatmap, 440),
             use_container_width=True,
         )
 
     st.subheader(
-        "Lịch sử từng khách hàng"
+        "Hành trình từng khách hàng"
     )
 
-    selected = st.selectbox(
+    customer = st.selectbox(
         "Chọn mã khách hàng",
         sorted(
             evolution["CustomerID"]
@@ -1783,36 +1719,35 @@ with st.expander(
         ),
     )
 
-    history = (
-        evolution[
-            evolution["CustomerID"] == selected
+    history = evolution.loc[
+        evolution["CustomerID"] == customer
+    ].sort_values("Month")
+
+    history_view = history[
+        [
+            "Tháng",
+            "Nhóm khách hàng",
+            "Recency",
+            "Frequency",
+            "Monetary",
         ]
-        .sort_values("Month")
-    )
+    ]
 
     st.dataframe(
-        history[
-            [
-                "Tháng",
-                "Nhóm khách hàng",
-                "Recency",
-                "Frequency",
-                "Monetary",
-            ]
-        ],
-        use_container_width=True,
+        history_view.round(2),
         hide_index=True,
+        use_container_width=True,
     )
 
     if len(history) > 1:
-        fig = px.line(
+        path_fig = px.line(
             history,
             x="Tháng",
             y="Cluster",
             markers=True,
         )
 
-        fig.update_yaxes(
+        path_fig.update_yaxes(
             tickvals=list(range(k)),
             ticktext=[
                 f"Nhóm khách hàng {i}"
@@ -1821,23 +1756,21 @@ with st.expander(
         )
 
         st.plotly_chart(
-            plot_style(fig),
+            chart_theme(path_fig),
             use_container_width=True,
         )
 
-    export_cols = [
-        "CustomerID",
-        "Tháng",
-        "Nhóm khách hàng",
-        "Recency",
-        "Frequency",
-        "Monetary",
-    ]
-
     st.download_button(
-        "⬇️ Tải lịch sử chuyển nhóm",
+        "⬇️ Tải Customer Evolution",
         evolution[
-            export_cols
+            [
+                "CustomerID",
+                "Tháng",
+                "Nhóm khách hàng",
+                "Recency",
+                "Frequency",
+                "Monetary",
+            ]
         ].to_csv(
             index=False
         ).encode("utf-8-sig"),
@@ -1846,28 +1779,30 @@ with st.expander(
     )
 
 
-# -----------------------------------------------------
-# BƯỚC 9 - KẾT QUẢ
-# -----------------------------------------------------
+# ------------------------------------------------------------
+# BƯỚC 9 - STREAMLIT VÀ KẾT QUẢ
+# ------------------------------------------------------------
 
 with st.expander(
     "9. Streamlit và kết quả"
 ):
     st.write(
-        f"**Số khách hàng:** {number(len(rfm))}"
+        "**Khách hàng hợp lệ:**",
+        nfmt(len(rfm)),
     )
 
     st.write(
-        f"**Số nhóm khách hàng:** {k}"
+        "**Số nhóm khách hàng:**",
+        k,
     )
 
     st.write(
         "**Thời gian dữ liệu:**",
-        clean["InvoiceDate"]
+        cleaned["InvoiceDate"]
         .min()
         .strftime("%d/%m/%Y"),
         "đến",
-        clean["InvoiceDate"]
+        cleaned["InvoiceDate"]
         .max()
         .strftime("%d/%m/%Y"),
     )
@@ -1877,27 +1812,18 @@ with st.expander(
         "RFM → Chuẩn hóa → K-Means → "
         "Phân tích khách hàng → "
         "Đánh giá & so sánh → "
-        "Customer Evolution → "
-        "Streamlit/Kết quả."
+        "Customer Evolution → Kết quả."
     )
 
 
-# =====================================================
-# 17. KẾT LUẬN
-# =====================================================
+# ============================================================
+# 17. CUỐI TRANG
+# ============================================================
 
-section(
-    "✅ Hoàn thành"
-)
-
-st.success(
-    f"Đã xử lý {number(len(rfm))} khách hàng "
-    f"và phân thành {k} nhóm khách hàng. "
-    f"Đây là phân tích dữ liệu lịch sử, "
-    f"không phải dự báo tương lai."
-)
+st.divider()
 
 st.caption(
-    "CUSTOMER INTELLIGENCE · "
-    "RFM · K-Means · Customer Evolution"
+    "CUSTOMER INTELLIGENCE • "
+    "RFM • K-Means • Customer Evolution • "
+    "Phân tích dữ liệu lịch sử"
 )
